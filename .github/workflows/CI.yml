@@ -29,9 +29,8 @@ env:
   ECR_REPO: aws/aws-otel-collector  
   TF_VAR_aws_access_key_id: ${{ secrets.INTEG_TEST_AWS_KEY_ID }}
   TF_VAR_aws_secret_access_key: ${{ secrets.INTEG_TEST_AWS_KEY_SECRET }} 
-jobs:
 
- 
+jobs:
   build:
     runs-on: ubuntu-latest
 
@@ -93,7 +92,37 @@ jobs:
       with:
         name: binary_artifacts
         path: build
+        
+  analyze:
+    name: CodeQL Analyze
+    needs: build
+    runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'go' ]
+    
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: ${{ matrix.language }}
+        
+      - name: Download built artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: binary_artifacts
+          path: build
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
+      
   packaging-msi:
     needs: build
     runs-on: windows-latest
@@ -526,5 +555,3 @@ jobs:
           token: "${{ secrets.REPO_WRITE_ACCESS_TOKEN }}"
           event-type: bump-version
           client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
-
-
