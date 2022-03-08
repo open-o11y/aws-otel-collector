@@ -13,6 +13,14 @@
 
 name: 'Canary Test'
 on:
+  push:
+    branches:
+
+    paths-ignore:
+      - '.github/**'
+      - '!.github/workflows/canary.yml'
+      - '**.md'
+
   schedule:
     - cron: '0 */4 * * *' # triggers the workflow every four hours
 
@@ -37,6 +45,8 @@ jobs:
         with:
           repository: 'aws-observability/aws-otel-test-framework'
           path: testing-framework
+          ref: testterraform
+
       - name: Set up Go 1.x
         uses: actions/setup-go@v2
         with:
@@ -101,6 +111,7 @@ jobs:
         with:
           repository: 'aws-observability/aws-otel-collector-test-framework'
           path: testing-framework
+          ref: testterraform
       - name: Restore aoutil
         uses: actions/cache@v2
         with:
