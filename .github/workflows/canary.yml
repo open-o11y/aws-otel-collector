@@ -26,7 +26,7 @@ on:
 
   # we can manually trigger this workflow by using dispatch for debuging
   repository_dispatch:
-    types: [canary-test]
+    types: [canary-test, dependency-build, workflow-run]
 
 env:
   TF_VAR_aws_access_key_id: ${{ secrets.INTEG_TEST_AWS_KEY_ID }}
