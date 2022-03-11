@@ -120,9 +120,9 @@ jobs:
 
       - name: Run Canary test
         uses: nick-invision/retry@v2
+        timeout-minutes: 1
         with:
           max_attempts: 3
-          timeout_seconds: 5
           retry_on: error
           retry_wait_seconds: 5
           command: |
