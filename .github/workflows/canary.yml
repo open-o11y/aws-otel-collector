@@ -122,7 +122,7 @@ jobs:
         uses: nick-invision/retry@v2
         with:
           max_attempts: 3
-          timeout_seconds: 20
+          timeout_seconds: 5
           retry_on: error
           retry_wait_seconds: 5
           command: |
