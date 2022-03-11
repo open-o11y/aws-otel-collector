@@ -123,6 +123,7 @@ jobs:
         timeout-minutes: 1
         with:
           max_attempts: 3
+          timeout_seconds: 1
           retry_on: error
           retry_wait_seconds: 5
           command: |
