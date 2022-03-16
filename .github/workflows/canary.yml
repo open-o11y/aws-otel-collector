@@ -13,8 +13,8 @@
 
 name: 'Canary Test'
 on:
-  schedule:
-    - cron: '0 */4 * * *' # triggers the workflow every four hours
+#   schedule:
+#     - cron: '0 */4 * * *' # triggers the workflow every four hours
 
   # we can manually trigger this workflow by using dispatch for debuging
   repository_dispatch:
@@ -138,7 +138,7 @@ jobs:
             cd testing-framework/terraform/canary
             terraform init
             if terraform apply -auto-approve -lock=false $opts -var="aoc_version=latest" -var="testcase=../testcases/${{ matrix.testcase }}" -var="testing_ami=${{ matrix.testing_ami }}" ; then
-              terraform destroy -auto-approve -var="region=us-west-2"
+              terraform destroy -auto-approve -var="region=us-west-2" && exit 0
             else
               terraform destroy -auto-approve -var="region=us-west-2" && exit 1
             fi
