@@ -122,10 +122,10 @@ jobs:
           timeout_minutes: 60
           command: |
             opts=""
-            if [[ -f testing-framework/terraform/testcases/${{ matrix.testcase }}/parameters.tfvars ]] ; then opts="-var-file=../testcases/${{ matrix.testcase }}/parameters.tfvars"; fi
+            if [[ -f testing-framework/terraform/testcases/otlp_grpc_exporter_cw_amp_xray_ecs/parameters.tfvars ]] ; then opts="-var-file=../testcases/otlp_grpc_exporter_cw_amp_xray_ecs/parameters.tfvars"; fi
             cd testing-framework/terraform/ecs
             terraform init
-            if terraform apply -auto-approve -lock=false $opts -var="ecs_launch_type=EC2" -var="aoc_version=latest" -var="testcase=../testcases/${{ matrix.testcase }}" ; then
+            if terraform apply -auto-approve -lock=false $opts -var="ecs_launch_type=EC2" -var="aoc_version=latest" -var="testcase=../testcases/otlp_grpc_exporter_cw_amp_xray_ecs" ; then
               terraform destroy -auto-approve
             else
               terraform destroy -auto-approve && exit 1
