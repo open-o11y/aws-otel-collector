@@ -60,35 +60,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.INTEG_TEST_AWS_KEY_SECRET }}
           aws-region: us-west-2
 
-  get-testing-suites:
-    runs-on: ubuntu-latest
-    outputs:
-      ecs-matrix: ${{ steps.set-matrix.outputs.ecs-matrix }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup Python
-        uses: actions/setup-python@v2.3.2
-
-      - name: testing suite for ADOT operator
-        id: set-matrix
-        run: |
-          ecs_matrix=$(python e2etest/get-testcases.py ecs_matrix)
-          echo "::set-output name=ecs-matrix::$ecs_matrix"
-
-      - name: List testing suites
-        run: |
-          echo ${{ steps.set-matrix.outputs.ecs-matrix }}
-
 
   e2etest-ecs:
     runs-on: ubuntu-latest
-    needs: [get-testing-suites, e2etest-release ]
-    strategy:
-      fail-fast: false
-      max-parallel: 10
-      matrix: ${{ fromJson(needs.get-testing-suites.outputs.ecs-matrix) }}
+    needs: [ e2etest-release ]
 
     steps:
       - uses: actions/checkout@v3
